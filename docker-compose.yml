@@ -6,7 +6,7 @@ services:
     container_name: staff-db
     restart: always
     ports:
-      - "5815:5432"
+      - "5605:5432"
     environment:
       POSTGRES_DB: staff
       POSTGRES_USER: postgres
@@ -20,7 +20,7 @@ services:
       context: ./Backend
     container_name: staff-backend
     ports:
-      - "3102:3102"
+      - "3605:3605"
     env_file:
       - ./Backend/.env
     depends_on:
@@ -31,7 +31,7 @@ services:
       context: ./Staff
     container_name: staff-ui
     ports:
-      - "8114:80"
+      - "8610:80"
     depends_on:
       - backend
 
