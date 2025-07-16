@@ -6,7 +6,7 @@ services:
     container_name: staff-db
     restart: always
     ports:
-      - "5620:5432"
+      - "5620:5432"                  # Expose DB to host on port 5620 (optional; remove if only backend needs DB)
     environment:
       POSTGRES_DB: staff
       POSTGRES_USER: postgres
@@ -20,9 +20,14 @@ services:
       context: ./Backend
     container_name: staff-backend
     ports:
-      - "3620:3620"
-    env_file:
-      - ./Backend/.env
+      - "3620:3620"                  # Backend runs on 3620
+    environment:
+      - PORT=3620                    # App listens on this port
+      - DB_USER=postgres
+      - DB_PASSWORD=yourpassword
+      - DB_NAME=staff
+      - DB_HOST=staff-db             # Service name; docker networking resolves this
+      - DB_PORT=5432
     depends_on:
       - staff-db
 
@@ -31,7 +36,7 @@ services:
       context: ./Staff
     container_name: staff-ui
     ports:
-      - "8620:80"
+      - "8620:80"                    # Frontend runs on port 8620 externally
     depends_on:
       - backend
 
